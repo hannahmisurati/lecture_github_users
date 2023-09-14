@@ -46,13 +46,22 @@ for user_id in id_list:
 		print("File exists: ", user_id)
 	else: 
 
-		print(user_id)
-		response_text = github_session.get(access_point + "/users/" + user_id).text
-		json_text = json.loads(response_text)
+		try:
 
-		f = open(file_name, "w")
-		f.write(json.dumps(json_text))
-		f.close()
+			print(user_id)
+			response_text = github_session.get(access_point + "/users/" + user_id).text
+			json_text = json.loads(response_text)
+
+
+	#name the file a tmp file while the code is running and change after code is complete, in case of server failure
+			f = open(file_name + ".tmp", "w")
+			f.write(json.dumps(json_text))
+			f.close()
+			os.rename(file_name + ".tmp", file_name)
+
+		except Exception as e:
+			print(e)
+			
 		time.sleep(5)
 
 

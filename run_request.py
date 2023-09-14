@@ -3,27 +3,51 @@
 import requests
 import json
 import os
+import pandas
+import time
+#pandas to read csv file, time to help the server
 
+#create a folder for the output
 if not os.path.exists("json_files"):
 	os.mkdir("json_files")
 
 access_point = "https://api.github.com"
 #print (access_point)
 
-response_text = requests.get(access_point + "/rate_limit").text
+#read the token file
+f = open("token", "r")
+token = f.read()
+f.close
 
-#json.loads is necessary for reading the file correctly
-print(json.loads(response_text))
+#have pandas read the csv file
+#get a specific column from the data
+id_list = pandas.read_csv("seed.csv")
+id_list = id_list['ghid']
 
-user_id = "erinata"
-response_text = requests.get(access_point + "/users/" + user_id).text
+#so we don't have a small limit of requests, set up github session, sign in with username in token
+github_session = requests.Session()
+github_session.auth = ("hannahmisurati", token)
 
-json_text = json.loads(response_text)
-
+#set up for loop to have code read seed.csv file and run code for all users
 #we open the door into the file, we have some json text, we use json.dumps to make it into a format that can be written into a file, 
 #then we close the door to the file
-#want to save inside json_files folder
-file_name = "json_files/" + user_id + ".json"
-f = open(file_name, "w")
-f.write(json.dumps(json_text))
-f.close()
+#want to save inside json_files folder, see line 26
+#json.loads is necessary for reading the file correctly
+
+
+response_text = github_session.get(access_point + "/rate_limit").text
+print(json.loads(response_text))
+
+for user_id in id_list:
+	print(user_id)
+	response_text = github_session.get(access_point + "/users/" + user_id).text
+	json_text = json.loads(response_text)
+
+	file_name = "json_files/" + user_id + ".json"
+	f = open(file_name, "w")
+	f.write(json.dumps(json_text))
+	f.close()
+	time.sleep(1)
+
+
+

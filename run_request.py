@@ -7,7 +7,7 @@ import pandas
 import time
 #pandas to read csv file, time to help the server
 
-#create a folder for the output
+#create a folder for what is downloaded from the internet
 if not os.path.exists("json_files"):
 	os.mkdir("json_files")
 
@@ -24,7 +24,7 @@ f.close
 id_list = pandas.read_csv("seed.csv")
 id_list = id_list['ghid']
 
-#so we don't have a small limit of requests, set up github session, sign in with username in token
+#so we don't have a small limit of requests, set up github session, sign in with username and token
 github_session = requests.Session()
 github_session.auth = ("hannahmisurati", token)
 

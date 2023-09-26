@@ -19,6 +19,7 @@ f = open("token", "r")
 token = f.read()
 f.close
 
+#instead of reading just the csv file think about how to use glob to run through all the seed.csv files in input files
 #have pandas read the csv file
 #get a specific column from the data
 id_list = pandas.read_csv("seed.csv")

@@ -25,11 +25,13 @@ for json_file_name in glob.glob("json_files/*.json"):
 	gh_number_id = json_data["id"]
 	updated_at = json_data["updated_at"]
 	followers = json_data["followers"]
+	followers_url = json_data["followers_url"]
 
 	print(gh_id)
 	print(gh_number_id)
 	print(updated_at)
 	print(followers)
+	print(followers_url)
 
 	#squirly parentheses indicate rows
 	row = pandas.DataFrame.from_records(
@@ -38,7 +40,8 @@ for json_file_name in glob.glob("json_files/*.json"):
 			"gh_id": gh_id,
 			"gh_number_id": gh_number_id,
 			"updated_at": updated_at,
-			"followers": followers
+			"followers": followers,
+			"followers_url": followers_url,
 		}
 		]
 		)
